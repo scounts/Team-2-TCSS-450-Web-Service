@@ -6,7 +6,7 @@ const pushyAPI = new Pushy(process.env.PUSHY_API_KEY);
 //use to send a message to a specific client using the token
 function sendMessageToIndividual(token, message) {
 
-    //build the message for Pushy to send
+    //build the message (chat message) for Pushy to send
     var data = {
         "type": "msg",
         "message": message,
@@ -30,7 +30,7 @@ function sendMessageToIndividual(token, message) {
 //use to send a contact request to a specific client using the token
 function sendContactRequestToIndividual(token, message) {
 
-    //build the message for Pushy to send
+    //build the message (contact request) for Pushy to send
     let data = {
         "type": "contact",
         "username": message
