@@ -1,10 +1,13 @@
 {
-    "name": "TCSS 450 Chat App Web Service",
-    "version": "0.1.0",
-    "description": "Chat App Web Service API Documentation",
-    "title": "Chat App API Doc",
+    "name": "TCSS 450 ThermoChat Web Service",
+    "version": "0.0.0",
+    "description": "ThermoChat Web Service API Documentation",
+    "title": "ThermoChat API Doc",
     "url" : "https://team-2-tcss-450-project.herokuapp.com/",
     "order": [
-      "Auth"
+      "Auth",
+      "Contacts",
+      "Chats",
+      "Messages"
     ]
   }
