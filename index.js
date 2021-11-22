@@ -26,6 +26,8 @@ app.use('/chats', middleware.checkToken, require('./routes/chats.js'))
 
 app.use('/contacts', middleware.checkToken, require('./routes/contacts.js'));
 
+app.use('/weather', require('./routes/weather.js'))
+
 /*
  * Return HTML for the / end point. 
  * This is a nice location to document your web service API
@@ -48,6 +50,8 @@ app.get("/", (request, response) => {
  * https://apidocjs.com/
  */
 app.use("/doc", express.static('apidoc'))
+
+
 
 /* 
 * Heroku will assign a port you can use via the 'PORT' environment variable
