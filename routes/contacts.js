@@ -259,6 +259,7 @@ router.put("/", (request, response, next) => {
  * 
  * @apiHeader {String} authorization Valid JSON Web Token JWT
  * 
+ * @apiSuccess {boolean} success True when contactReqs and contacts lists are returned
  * @apiSuccess {Object[]} contactsReq List of unapproved contacts
  * @apiSuccess {Object[]} contacts List of approved contacts
  * @apiSuccess {String} memberid MemberID of the member whose contact info is being retrieved

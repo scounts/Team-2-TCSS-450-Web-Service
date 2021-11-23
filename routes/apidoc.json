@@ -8,6 +8,7 @@
       "Auth",
       "Contacts",
       "Chats",
+      "MemberChats",
       "Messages"
     ]
   }
