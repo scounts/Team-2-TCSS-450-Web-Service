@@ -22,8 +22,7 @@ router.get('/current', async (req, res) => {
             };
 
             const tempature = {
-                current_temp: (Math.round((data.main.temp - 273.15) * (9 / 5) + 32)) 
-                //+ "° F"
+                current_temp: (Math.round((data.main.temp - 273.15) * (9 / 5) + 32)) + "° F"
             };
             
             res.send({location, tempature})
