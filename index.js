@@ -30,7 +30,7 @@ app.use('/memberchats', middleware.checkToken, require('./routes/memberchats.js'
 
 app.use('/contacts', middleware.checkToken, require('./routes/contacts.js'));
 
-app.use('/weather', require('./routes/weather.js'))
+app.use('/weather', middleware.checkToken, require('./routes/weather.js'))
 
 /*
  * Return HTML for the / end point. 
