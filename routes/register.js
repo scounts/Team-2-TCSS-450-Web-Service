@@ -1,6 +1,9 @@
 //express is the framework we're going to use to handle requests
 const express = require('express')
 
+//enviromental variable for group email
+const GROUP_EMAIL = process.env.AUTH_EMAIL;
+
 //Access the connection to Heroku Database
 const pool = require('../utilities').pool
 
@@ -78,7 +81,7 @@ router.post('/', (request, response) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail("our.email@lab.com", email, "Welcome to our App!", "Please verify your Email account.")
+                sendEmail(GROUP_EMAIL, email, "Welcome to our App!", "Please verify your Email account.")
             })
             .catch((error) => {
                 //log the error
