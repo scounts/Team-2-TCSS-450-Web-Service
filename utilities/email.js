@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 const GROUP_EMAIL = process.env.AUTH_EMAIL;
 const GROUP_PASSWORD = process.env.AUTH_PASSWORD;
+const express = require('express');
+const router = express.Router();
 
 let sendEmail = (sender, receiver, subject, message) => {
     //research nodemailer for sending email from node.
