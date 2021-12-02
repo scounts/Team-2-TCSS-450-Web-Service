@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-//const GROUP_EMAIL = process.env.AUTH_EMAIL;
+const GROUP_EMAIL = process.env.AUTH_EMAIL;
 const GROUP_PASSWORD = process.env.AUTH_PASSWORD;
 
 let sendEmail = (sender, receiver, subject, message) => {
