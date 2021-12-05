@@ -6,7 +6,7 @@ const pool = require('../utilities/exports').pool
 
 const router = express.Router()
 
-
+const msg_functions = require('../utilities/exports').messaging
 
 /**
  * @apiDefine JSONError
@@ -128,12 +128,40 @@ const router = express.Router()
     });
 
 }, (request, response) => {
-    
-    // Success response
-    let receiver = response.receiver;
-     response.status(201).send({
-        success: true,
-        message: receiver
+
+    let query = 'SELECT Token ' +
+                'FROM Push_Token ' +
+                'WHERE Push_Token.MemberID = (SELECT MemberID_B ' +
+                                             'FROM Contacts ' +
+                                             'WHERE Contacts.MemberID_A = $1);'
+    let values = [request.decoded.memberid];
+    pool.query(query, values)
+        .then(result => {
+            if (result.rowCount == 0) {
+                response.status(404).send({
+                    error: "No token exists"
+                });
+            } else if (result.rowCount > 1) {
+                response.status(400).send({
+                    message: "Unexpected result from query"
+                });
+            } else {
+                result.rows.forEach(entry =>
+                    msg_functions.sendContactRequestToIndividual(
+                        entry.token,
+                        response.message));
+                // Success response
+                let receiver = response.receiver;
+                response.status(201).send({
+                    success: true,
+                    message: receiver 
+                });
+            }
+        }).catch(err => {
+            response.status(400).send({
+                message: "Pushy error",
+                error: err
+            });
     });
 
 });

@@ -32,6 +32,8 @@ app.use('/contacts', middleware.checkToken, require('./routes/contacts.js'));
 
 app.use('/weather', middleware.checkToken, require('./routes/weather.js'))
 
+app.use('/changepw', middleware.checkToken, require('./routes/changepw.js'))
+
 /*
  * Return HTML for the / end point. 
  * This is a nice location to document your web service API

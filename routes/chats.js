@@ -65,7 +65,7 @@ router.post("/", (request, response, next) => {
 })
 
 /**
- * @api {put} /chats/:chatId? Request add a user to a chat
+ * @api {put} /chats/:chatId? Request to add a user to a chat
  * @apiName PutChats
  * @apiGroup Chats
  * 
@@ -261,7 +261,7 @@ router.get("/:chatId", (request, response, next) => {
 });
 
 /**
- * @api {delete} /chats/:chatId?/:email? Request delete a user from a chat
+ * @api {delete} /chats/:chatId?/:email? Request to delete a user from a chat
  * @apiName DeleteChats
  * @apiGroup Chats
  * 
