@@ -15,7 +15,7 @@ const router = express.Router()
 
 
 /**
- * @api {post} /contacts Request to change password
+ * @api {post} /changepw Request to change password
  * @apiName PostChangePW
  * @apiGroup ChangePW
  * 
