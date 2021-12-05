@@ -1,3 +1,9 @@
+const nodemailer = require('nodemailer');
+const GROUP_EMAIL = process.env.AUTH_EMAIL;
+const GROUP_PASSWORD = process.env.AUTH_PASSWORD;
+const express = require('express');
+const router = express.Router();
+
 let sendEmail = (sender, receiver, subject, message) => {
     //research nodemailer for sending email from node.
     // https://nodemailer.com/about/
@@ -14,6 +20,29 @@ let sendEmail = (sender, receiver, subject, message) => {
     console.log("_________________________________________________________")
     console.log(message)
     console.log("*********************************************************")
+
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: GROUP_EMAIL,
+          pass: GROUP_PASSWORD
+        }
+      });
+
+    var mailOptions = {
+        from: GROUP_EMAIL,
+        to: receiver,
+        subject: subject,
+        text: message
+      };
+      
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+    });
 
 }
 

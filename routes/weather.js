@@ -30,7 +30,7 @@ router.get('/current', async (req, res) => {
     });
 
     router.get('/hourly', async (req, res) => {
-        const url =`https://api.openweathermap.org/data/2.5/onecall?lat=47.247306&lon=-122.438352&exclude=current,minutely,daily,alerts&appid=${API_KEY}`
+        const url =`https://api.openweathermap.org/data/2.5/onecall?lat=47.247306&lon=-122.438352&exclude=current,minutely,daily,alerts&units=imperial&appid=${API_KEY}`
          await fetch(url)
              .then((response) => response.json())
              .then((data) => {
@@ -42,7 +42,7 @@ router.get('/current', async (req, res) => {
          });
 
     router.get('/daily', async (req, res) => {
-        const url =`https://api.openweathermap.org/data/2.5/forecast?zip=98402,&appid=${API_KEY}`
+        const url =`https://api.openweathermap.org/data/2.5/forecast?units=imperial&zip=98402,&appid=${API_KEY}`
         await fetch(url)
             .then((response) => response.json())
             .then((data) => {
