@@ -131,10 +131,8 @@ const msg_functions = require('../utilities/exports').messaging
 
     let query = 'SELECT Token ' +
                 'FROM Push_Token ' +
-                'WHERE Push_Token.MemberID = (SELECT MemberID_B ' +
-                                             'FROM Contacts ' +
-                                             'WHERE Contacts.MemberID_A = $1);'
-    let values = [request.decoded.memberid];
+                'WHERE Push_Token.MemberID = $1 '
+    let values = [response.receiver];
     pool.query(query, values)
         .then(result => {
             if (result.rowCount == 0) {
