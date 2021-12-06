@@ -33,7 +33,9 @@ const msg_functions = require('../utilities/exports').messaging
  * @apiError (400: Contact already exists) {String} message "Contact already exists"
  * @apiError (400: Unexpected result from query) {String} message "Unexpected result from query"
  * @apiError (400: SQL Error, Adding contact to DB) {String} message the reported SQL error details
+ * @apiError (400: Pushy error) {String} message the reported pushy error details
  * @apiError (404: Member not found) {String} message "Member not found"
+ * @apiError (404: Token not found) {String} message "Token not found"
  * 
  * @apiUse JSONError
  */
@@ -129,15 +131,16 @@ const msg_functions = require('../utilities/exports').messaging
 
 }, (request, response) => {
 
+    // Send notification to member being sent the contact request
     let query = 'SELECT Token ' +
                 'FROM Push_Token ' +
-                'WHERE Push_Token.MemberID = $1 '
+                'WHERE Push_Token.MemberID = $1'
     let values = [response.receiver];
     pool.query(query, values)
         .then(result => {
             if (result.rowCount == 0) {
                 response.status(404).send({
-                    error: "No token exists"
+                    error: "Token not found"
                 });
             } else if (result.rowCount > 1) {
                 response.status(400).send({

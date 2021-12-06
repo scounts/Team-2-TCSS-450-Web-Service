@@ -49,8 +49,30 @@ function sendContactRequestToIndividual(token, message) {
     })
 }
 
+//use to send chat notification to a specific client by the token
+function sendChatToIndividual(token, message) {
+
+    //build the message for Pushy to send
+    let data = {
+        "type": "chat",
+        "name": message
+    };
+
+    // Send push notification via the Send Notifications API
+    // https://pushy.me/docs/api/send-notifications
+    pushyAPI.sendPushNotification(data, token, {}, function (err, id) {
+        // Log errors to console
+        if (err) {
+            return console.log('Fatal Error', err);
+        }
+
+        // Log success
+        console.log('Push sent successfully! (ID: ' + id + ')');
+    })
+}
+
 //add other "sendTypeToIndividual" functions here. Don't forget to export them
 
 module.exports = {
-    sendMessageToIndividual, sendContactRequestToIndividual
+    sendMessageToIndividual, sendContactRequestToIndividual, sendChatToIndividual
 }

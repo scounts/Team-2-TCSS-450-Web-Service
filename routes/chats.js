@@ -6,6 +6,8 @@ const pool = require('../utilities/exports').pool
 
 const router = express.Router()
 
+const msg_functions = require("../utilities/pushy_utilities");
+
 const validation = require('../utilities').validation
 let isStringProvided = validation.isStringProvided
 
@@ -82,8 +84,10 @@ router.post("/", (request, response, next) => {
  * @apiError (400: Invalid Parameter) {String} message "Malformed parameter. chatId must be a number" 
  * @apiError (400: Duplicate Email) {String} message "user already joined"
  * @apiError (400: Missing Parameters) {String} message "Missing required information"
- * 
  * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * @apiError (400: Unexpected result from query) {String} message "Unexpected result from query"
+ * @apiError (400: Pushy error) {String} message the reported pushy error details
+ * @apiError (404: Token not found) {String} message "Token not found"
  * 
  * @apiUse JSONError
  */ 
@@ -165,7 +169,7 @@ console.log(request.decoded)
                 })
             })
 
-}, (request, response) => {
+}, (request, response, next) => {
     //Insert the memberId into the chat
     let insert = `INSERT INTO ChatMembers(ChatId, MemberId)
                   VALUES ($1, $2)
@@ -182,8 +186,47 @@ console.log(request.decoded)
                 error: err
             })
         })
-    }
-)
+
+}, (request, response) => {
+
+    //Send notification to member being added to the chat
+    let query = 'SELECT Token ' +
+                'FROM Push_Token ' +
+                'WHERE Push_Token.MemberID = $1'
+    let values = [response.decoded.memberid]
+    pool.query(query, values)
+        .then(result => {
+            if (result.rowCount == 0) {
+                response.status(404).send({
+                    error: "No token exists"
+                });
+            } else if (result.rowCount > 1) {
+                response.status(400).send({
+                    message: "Unexpected result from query"
+                });
+            } else {
+                result.rows.forEach(entry =>
+                    msg_functions.sendChatToIndividual(
+                        entry.token,
+                        response.message));
+                // Success response
+                let receiver = response.receiver;
+                response.status(201).send({
+                    success: true,
+                    message: receiver 
+                });
+            }
+        }).catch(err => {
+            response.status(400).send({
+                message: "Pushy error",
+                error: err
+            });
+        });
+
+});
+
+
+
 
 /**
  * @api {get} /chats/:chatId? Request to get the emails of user in a chat
