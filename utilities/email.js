@@ -22,7 +22,7 @@ let sendEmail = (sender, receiver, subject, message) => {
     console.log("*********************************************************")
 
     var transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        service: 'Yahoo',
         auth: {
           user: GROUP_EMAIL,
           pass: GROUP_PASSWORD
