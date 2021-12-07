@@ -21,7 +21,7 @@ let sendEmail = (sender, receiver, subject, message) => {
     console.log(message)
     console.log("*********************************************************")
 
-    var smtptransporter = nodemailer.createTransport("SMTP", {
+    var transporter = nodemailer.createTransport( {
         service: 'Gmail',
         auth: {
           user: GROUP_EMAIL,
@@ -36,7 +36,7 @@ let sendEmail = (sender, receiver, subject, message) => {
         text: message
       };
       
-    smtptransporter.sendMail(mailOptions, function(error, info){
+    transporter.sendMail(mailOptions, function(error, info){
     if (error) {
         console.log(error);
     } else {
