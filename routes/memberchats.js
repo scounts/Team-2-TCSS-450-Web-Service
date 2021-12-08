@@ -16,7 +16,7 @@ const router = express.Router()
  * @apiHeader {String} authorization Valid JSON Web Token JWT
  * 
  * @apiSuccess {boolean} success True when the list of chats the requestee is in is returned
- * @apiSuccess {Object[]} contacts List of chats the requestee is in
+ * @apiSuccess {Object[]} chatlist List of chats the requestee is in
  * @apiSuccess {String} chatid ChatID of a chat the member is in
  * @apiSuccess {String} memberid MemberID of the member making the request
  *
