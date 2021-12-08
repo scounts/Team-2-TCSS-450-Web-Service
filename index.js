@@ -20,7 +20,7 @@ app.use('/auth', require('./routes/signin.js'))
 
 app.use('/auth', require('./routes/register.js'))
 
-app.use('/verification', require('./routes/register.js'))
+//app.use('/verification', require('./routes/register.js'))
 
 app.use('/auth', middleware.checkToken, require('./routes/pushyregister.js'))
 

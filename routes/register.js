@@ -133,17 +133,17 @@ router.get('/hash_demo', (request, response) => {
     })
 })
 
-router.get('/verification/:code', (request, response) => {
-    //var code = request.params.code;
+// router.get('/verification/:code', (request, response) => {
+//     //var code = request.params.code;
 
-        //request needs to code
+//         //request needs to code
 
-        //update verification where code is ____
-        //UPDATE members SET verification = 1 where CODE
+//         //update verification where code is ____
+//         //UPDATE members SET verification = 1 where CODE
 
-        //.res send response saying "your email is now verified"
-    response.writeHead(200, {'Content-Type': 'text/html'});
-    response.write('<h' + ' style="color:black">Your email is now verified!</h' + '>');
-})
+//         //.res send response saying "your email is now verified"
+//     response.writeHead(200, {'Content-Type': 'text/html'});
+//     response.write('<h' + ' style="color:black">Your email is now verified!</h' + '>');
+// })
 
 module.exports = router
