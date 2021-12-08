@@ -93,10 +93,10 @@ router.post("/", (request, response, next) => {
  * 
  * @apiSuccess {boolean} success true when the name is inserted
  * 
- * @apiError (404: Chat Not Found) {String} message "chatID not found"
- * @apiError (404: Email Not Found) {String} message "email not found"
- * @apiError (400: Invalid Parameter) {String} message "Malformed parameter. chatId must be a number" 
- * @apiError (400: Duplicate Email) {String} message "user already joined"
+ * @apiError (404: Chat Not Found) {String} message "Chat ID not found"
+ * @apiError (404: Contact not found) {String} message "Contact not found"
+ * @apiError (400: Invalid Parameter) {String} message "Malformed parameter. chatnum must be a number" 
+ * @apiError (400: User already joined) {String} message "User already joined"
  * @apiError (400: Missing Parameters) {String} message "Missing required information"
  * @apiError (400: SQL Error) {String} message the reported SQL error details
  * @apiError (400: Unexpected result from query) {String} message "Unexpected result from query"
@@ -216,7 +216,7 @@ console.log(request.decoded)
         .then(result => {
             if (result.rowCount == 0) {
                 response.status(404).send({
-                    error: "No token exists"
+                    error: "Token not found"
                 });
             } else if (result.rowCount > 1) {
                 response.status(400).send({
