@@ -148,8 +148,6 @@ router.put("/", (request, response, next) => {
                 'WHERE (MemberID_A = $1 AND MemberID_B = $2) OR (MemberID_A = $2 AND MemberID_B = $1)'
     let values = [request.decoded.memberid, request.body.membernum]
 
-console.log(request.decoded)
-
     pool.query(query, values)
         .then(result => {
             if (result.rowCount == 0) {
