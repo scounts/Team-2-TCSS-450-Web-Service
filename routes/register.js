@@ -57,6 +57,17 @@ router.post('/', (request, response) => {
     const username = isStringProvided(request.body.username) ?  request.body.username : request.body.email
     const email = request.body.email
     const password = request.body.password
+    const verification = 0;
+
+    //create a unique code that is random string of letters and numbers:
+    var code           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var length = 7;
+    for ( var i = 0; i < length; i++ ) {
+      code += characters.charAt(Math.floor(Math.random() * 
+        length));
+    }
+
     //Verify that the caller supplied all the parameters
     //In js, empty strings or null values evaluate to false
     if(isStringProvided(first) 
@@ -72,8 +83,8 @@ router.post('/', (request, response) => {
         
         //We're using placeholders ($1, $2, $3) in the SQL query string to avoid SQL Injection
         //If you want to read more: https://stackoverflow.com/a/8265319
-        let theQuery = "INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt) VALUES ($1, $2, $3, $4, $5, $6) RETURNING Email"
-        let values = [first, last, username, email, salted_hash, salt]
+        let theQuery = "INSERT INTO MEMBERS(FirstName, LastName, Username, Email, Password, Salt, Verification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING Email"
+        let values = [first, last, username, email, salted_hash, salt, verification, code]
         pool.query(theQuery, values)
             .then(result => {
                 //We successfully added the user!
@@ -81,7 +92,7 @@ router.post('/', (request, response) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail(GROUP_EMAIL, email, "Welcome to our App!", "Please verify your Email account.")
+                sendEmail(GROUP_EMAIL, email, 'Welcome to ThermoChat!', `Please verify your Email account using this link:  https://team-2-tcss-450-project.herokuapp.com/verification/${code}`)
             })
             .catch((error) => {
                 //log the error
@@ -122,5 +133,15 @@ router.get('/hash_demo', (request, response) => {
     })
 })
 
+// router.get('/verification/:code', (request, response) => {
+//     var code = request.params.code;
+
+//         //request needs to code
+
+//         //update verification where code is ____
+//         //UPDATE members SET verification = 1 where CODE
+
+//         //.res send response saying "your email is now verified"
+// })
 
 module.exports = router
