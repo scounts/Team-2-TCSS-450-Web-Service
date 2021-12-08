@@ -49,14 +49,27 @@ router.post("/", (request, response, next) => {
 
     let insert = `INSERT INTO Chats(Name)
                   VALUES ($1)
-                  RETURNING ChatId`
+                  RETURNING ChatId;`
     let values = [request.body.name]
     pool.query(insert, values)
         .then(result => {
-            response.send({
-                success: true,
-                chatID:result.rows[0].chatid
-            })
+            const newChatID = result.rows[0].chatid
+            // add user who created chat to the chatroom
+            let query = 'INSERT INTO ChatMembers ' +
+                        'VALUES ($1, $2)'
+            let values = [newChatID, request.decoded.memberid]
+            pool.query(query, values)
+                .then(result => {
+                    response.send({
+                        success: true,
+                        chatID: newChatID
+                    })
+                }).catch(err => {
+                    response.status(400).send({
+                        message: "SQL Error",
+                        error: err
+                    })
+                });
         }).catch(err => {
             response.status(400).send({
                 message: "SQL Error",
@@ -64,10 +77,10 @@ router.post("/", (request, response, next) => {
             })
 
         })
-})
+});
 
 /**
- * @api {put} /chats/:chatId? Request to add a user to a chat
+ * @api {put} /chats/:chatnum/:cmembernum? Request to add a user to a chat
  * @apiName PutChats
  * @apiGroup Chats
  * 
@@ -75,7 +88,8 @@ router.post("/", (request, response, next) => {
  * 
  * @apiHeader {String} authorization Valid JSON Web Token JWT
  * 
- * @apiParam {Number} chatId the chat to add the user to
+ * @apiParam {Number} chatnum the chat to add the user to
+ * @apiParam {Number} membernum the memberId of the user to add to the chat
  * 
  * @apiSuccess {boolean} success true when the name is inserted
  * 
@@ -91,13 +105,14 @@ router.post("/", (request, response, next) => {
  * 
  * @apiUse JSONError
  */ 
-router.put("/:chatId/", (request, response, next) => {
+//router.put("/:chatnum/:membernum", (request, response, next) => {
+router.put("/", (request, response, next) => {
     //validate on empty parameters
-    if (!request.params.chatId) {
+    if (!request.body.chatnum || !request.body.membernum) {
         response.status(400).send({
             message: "Missing required information"
         })
-    } else if (isNaN(request.params.chatId)) {
+    } else if (isNaN(request.body.chatnum)) {
         response.status(400).send({
             message: "Malformed parameter. chatId must be a number"
         })
@@ -107,7 +122,7 @@ router.put("/:chatId/", (request, response, next) => {
 }, (request, response, next) => {
     //validate chat id exists
     let query = 'SELECT * FROM CHATS WHERE ChatId=$1'
-    let values = [request.params.chatId]
+    let values = [request.body.chatnum]
 
     pool.query(query, values)
         .then(result => {
@@ -126,9 +141,12 @@ router.put("/:chatId/", (request, response, next) => {
         })
         //code here based on the results of the query
 }, (request, response, next) => {
-    //validate email exists 
-    let query = 'SELECT * FROM Members WHERE MemberId=$1'
-    let values = [request.decoded.memberid]
+    //validate contact exists 
+    //let query = 'SELECT * FROM Members WHERE MemberId=$1'
+    let query = 'SELECT * ' +
+                'FROM CONTACTS ' +
+                'WHERE (MemberID_A = $1 AND MemberID_B = $2) OR (MemberID_A = $2 AND MemberID_B = $1)'
+    let values = [request.decoded.memberid, request.body.membernum]
 
 console.log(request.decoded)
 
@@ -136,10 +154,10 @@ console.log(request.decoded)
         .then(result => {
             if (result.rowCount == 0) {
                 response.status(404).send({
-                    message: "email not found"
+                    message: "Contact not found"
                 })
             } else {
-                //user found
+                //contact found
                 next()
             }
         }).catch(error => {
@@ -149,15 +167,15 @@ console.log(request.decoded)
             })
         })
 }, (request, response, next) => {
-        //validate email does not already exist in the chat
+        //validate user does not already exist in the chat
         let query = 'SELECT * FROM ChatMembers WHERE ChatId=$1 AND MemberId=$2'
-        let values = [request.params.chatId, request.decoded.memberid]
+        let values = [request.body.chatnum, request.body.membernum]
     
         pool.query(query, values)
             .then(result => {
                 if (result.rowCount > 0) {
                     response.status(400).send({
-                        message: "user already joined"
+                        message: "User already joined"
                     })
                 } else {
                     next()
@@ -174,7 +192,7 @@ console.log(request.decoded)
     let insert = `INSERT INTO ChatMembers(ChatId, MemberId)
                   VALUES ($1, $2)
                   RETURNING *`
-    let values = [request.params.chatId, request.decoded.memberid]
+    let values = [request.body.chatnum, request.body.membernum]
     pool.query(insert, values)
         .then(result => {
             response.send({
@@ -249,7 +267,7 @@ console.log(request.decoded)
  * 
  * @apiUse JSONError
  */ 
-router.get("/:chatId", (request, response, next) => {
+ router.get("/:chatId", (request, response, next) => {
     //validate on missing or invalid (type) parameters
     if (!request.params.chatId) {
         response.status(400).send({
@@ -422,4 +440,4 @@ router.delete("/:chatId/:email", (request, response, next) => {
     }
 )
 
-module.exports = router
+module.exports = router;
