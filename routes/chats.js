@@ -145,7 +145,7 @@ router.put("/", (request, response, next) => {
     //let query = 'SELECT * FROM Members WHERE MemberId=$1'
     let query = 'SELECT * ' +
                 'FROM CONTACTS ' +
-                'WHERE (MemberID_A = $1 AND MemberID_B = $2) OR (MemberID_A = $2 AND MemberID_B = $1)'
+                'WHERE (MemberID_A = $1 AND MemberID_B = $2 AND Verified = 1) OR (MemberID_A = $2 AND MemberID_B = $1 AND Verified = 1)'
     let values = [request.decoded.memberid, request.body.membernum]
 
     pool.query(query, values)
