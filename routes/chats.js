@@ -80,7 +80,7 @@ router.post("/", (request, response, next) => {
 });
 
 /**
- * @api {put} /chats/:chatnum/:cmembernum? Request to add a user to a chat
+ * @api {put} /chats/:chatnum/:membernum? Request to add a user to a chat
  * @apiName PutChats
  * @apiGroup Chats
  * 
