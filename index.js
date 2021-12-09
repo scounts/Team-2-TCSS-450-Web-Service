@@ -20,6 +20,8 @@ app.use('/auth', require('./routes/signin.js'))
 
 app.use('/auth', require('./routes/register.js'))
 
+app.use('/verification', require('./routes/verification.js'))
+
 app.use('/auth', middleware.checkToken, require('./routes/pushyregister.js'))
 
 app.use('/chats', middleware.checkToken, require('./routes/chats.js'))
@@ -33,6 +35,8 @@ app.use('/contacts', middleware.checkToken, require('./routes/contacts.js'));
 app.use('/weather', middleware.checkToken, require('./routes/weather.js'))
 
 app.use('/changepw', middleware.checkToken, require('./routes/changepw.js'))
+
+
 
 /*
  * Return HTML for the / end point. 
