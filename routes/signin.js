@@ -71,7 +71,7 @@ router.get('/', (request, response, next) => {
         })
     }
 }, (request, response) => {
-    const theQuery = "SELECT Password, Salt, MemberId FROM Members WHERE Email=$1"
+    const theQuery = "SELECT Password, Salt, MemberId, verification FROM Members WHERE Email=$1"
     const values = [request.auth.email]
     pool.query(theQuery, values)
         .then(result => { 
@@ -91,30 +91,41 @@ router.get('/', (request, response, next) => {
             //Generate a hash based on the stored salt and the provided password
             let providedSaltedHash = generateHash(request.auth.password, salt)
 
-            //Did our salted hash match their salted hash?
-            if (storedSaltedHash === providedSaltedHash ) {
-                //credentials match. get a new JWT
-                let token = jwt.sign(
-                    {
-                        "email": request.auth.email,
-                        "memberid": result.rows[0].memberid
-                    },
-                    config.secret,
-                    { 
-                        expiresIn: '100 days' // expires in 14 days
-                    }
-                )
-                //package and send the results
-                response.json({
-                    success: true,
-                    message: 'Authentication successful!',
-                    token: token
-                })
+            //Retrieve the verification status for user
+            let verification = result.rows[0].verification
+
+            
+            if (verification == 1) {
+                //Did our salted hash match their salted hash?
+                if (storedSaltedHash === providedSaltedHash ) {
+                    //credentials match. get a new JWT
+                    let token = jwt.sign(
+                        {
+                            "email": request.auth.email,
+                            "memberid": result.rows[0].memberid
+                        },
+                        config.secret,
+                        { 
+                            expiresIn: '100 days' // expires in 14 days
+                        }
+                    )
+                    //package and send the results
+                    response.json({
+                        success: true,
+                        message: 'Authentication successful!',
+                        token: token
+                    })
+                } else {
+                    //credentials dod not match
+                    response.status(400).send({
+                        message: 'Credentials did not match' 
+                    })
+                }
             } else {
-                //credentials dod not match
+                //User not registered 
                 response.status(400).send({
-                    message: 'Credentials did not match' 
-                })
+                    message: 'Email has not been verified' 
+                }) 
             }
         })
         .catch((err) => {
