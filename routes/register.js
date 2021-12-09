@@ -60,13 +60,15 @@ router.post('/', (request, response) => {
     const verification = 0;
 
     //create a unique code that is random string of letters and numbers:
-    var code           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var length = 12;
-    for ( var i = 0; i < length; i++ ) {
-      code += characters.charAt(Math.floor(Math.random() * 
-        length));
-    }
+    // var code           = '';
+    // var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    // var length = 12;
+    // for ( var i = 0; i < length; i++ ) {
+    //   code += characters.charAt(Math.floor(Math.random() * 
+    //     length));
+    // }
+
+    var code = (Math.random().toString(36).slice(2))
 
     //Verify that the caller supplied all the parameters
     //In js, empty strings or null values evaluate to false
@@ -132,18 +134,5 @@ router.get('/hash_demo', (request, response) => {
         'unsalted_hash': unsalted_hash
     })
 })
-
-// router.get('/verification/:code', (request, response) => {
-//     //var code = request.params.code;
-
-//         //request needs to code
-
-//         //update verification where code is ____
-//         //UPDATE members SET verification = 1 where CODE
-
-//         //.res send response saying "your email is now verified"
-//     response.writeHead(200, {'Content-Type': 'text/html'});
-//     response.write('<h' + ' style="color:black">Your email is now verified!</h' + '>');
-// })
 
 module.exports = router
