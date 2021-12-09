@@ -17,6 +17,8 @@ router.get('/current', async (req, res) => {
             const location = {
                 city: data.name,
                 country: data.sys.country,
+                desc: data.weather[0],
+                icon: data.weather[4]
             };
 
             const tempature = {
