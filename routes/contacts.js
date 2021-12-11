@@ -291,8 +291,10 @@ router.put("/", (request, response, next) => {
  * @apiSuccess {boolean} success True when contactReqs and contacts lists are returned
  * @apiSuccess {Object[]} contactsReq List of unapproved contacts
  * @apiSuccess {Object[]} contacts List of approved contacts
- * @apiSuccess {String} memberid MemberID of the member whose contact info is being retrieved
- * @apiSuccess {String} username Username of the member whose contact info is being retrieved
+ * @apiSuccess {String} memberid MemberID of the member the requestee has a contact with
+ * @apiSuccess {String} username Username of the member the requestee has a contact with
+ * @apiSuccess {String} firstname First name of the member the requestee has a contact with
+ * @apiSuccess {String} lastname Last name of the member the requestee has a contact with
  * @apiSuccess {String} primarykey Unique identifier for the contact
  * @apiSuccess {Number} verified Number representing whether the contact is a contact request (0) or a contact (1)
  * @apiSuccess {String} memberid_a MemberID of the member to send the contact request
@@ -307,7 +309,7 @@ router.put("/", (request, response, next) => {
  router.get("/", (request, response) => { 
 
     if (request.decoded.memberid) {
-        let query = 'SELECT Members.MemberID, Members.Username, Contacts.PrimaryKey, Contacts.Verified, Contacts.MemberID_A, Contacts.MemberID_B ' +
+        let query = 'SELECT Members.MemberID, Members.Username, Members.FirstName, Members.LastName, Contacts.PrimaryKey, Contacts.Verified, Contacts.MemberID_A, Contacts.MemberID_B ' +
                     'FROM Members, Contacts ' +
                     'WHERE ($1 = Contacts.MemberID_B AND Members.MemberID = Contacts.MemberID_A) OR ($1 = Contacts.MemberID_A AND Members.MemberID = Contacts.MemberID_B)';
         let values = [request.decoded.memberid];
