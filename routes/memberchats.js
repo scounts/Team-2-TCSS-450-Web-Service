@@ -17,9 +17,9 @@ const router = express.Router()
  * 
  * @apiSuccess {boolean} success True when the list of chats the requestee is in is returned
  * @apiSuccess {Object[]} chatlist List of chats the requestee is in
- * @apiSuccess {String} chatid ChatID of a chat the member is in
- * chatname add this
+ * @apiSuccess {String} chatid ChatID of a chat the member is in 
  * @apiSuccess {String} memberid MemberID of the member making the request
+ * @apiSuccess {String} name The name of the chat
  *
  * @apiError (400: SQL Error, Retrieve Chats of Requestee) {String} message the reported SQL error details
  * @apiError (404: Member Not Found) {String} message "Member not found"
