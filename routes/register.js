@@ -59,15 +59,6 @@ router.post('/', (request, response) => {
     const password = request.body.password
     const verification = 0;
 
-    //create a unique code that is random string of letters and numbers:
-    // var code           = '';
-    // var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    // var length = 12;
-    // for ( var i = 0; i < length; i++ ) {
-    //   code += characters.charAt(Math.floor(Math.random() * 
-    //     length));
-    // }
-
     var code = (Math.random().toString(36).slice(2))
 
     //Verify that the caller supplied all the parameters
