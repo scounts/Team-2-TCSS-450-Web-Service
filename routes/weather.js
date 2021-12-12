@@ -9,7 +9,13 @@ const fetch = require('node-fetch');
 const router = express.Router()
 
 router.get('/current', async (req, res) => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&zip=98402,&appid=${API_KEY}`
+    let latitude = req.query.latitude;
+    let longitude = req.query.longitude;
+    //latitude = 37.421779;
+    //longitude = -122.084563;
+    //api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+    //const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&zip=98402,&appid=${API_KEY}`
+    const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
     await fetch(url)
         .then((response) => response.json())
         .then((data) => {
