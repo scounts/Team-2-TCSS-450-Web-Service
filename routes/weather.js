@@ -73,50 +73,50 @@ router.get('/current', async (req, res) => {
                 var week = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
                 const day1 = {
-                    high: Math.round(data.daily[1].temp.max),
-                    low:  Math.round(data.daily[1].temp.min),
+                    high: Math.round(data.daily[1].temp.max)+ "°",
+                    low:  Math.round(data.daily[1].temp.min)+ "°",
                     date: week[(new Date(data.daily[1].dt * 1000)).getDay()],
                     desc: data.daily[1].weather[0].main
 
                 };
                 const day2 = {
-                    high: Math.round(data.daily[2].temp.max),
-                    low:  Math.round(data.daily[2].temp.min),
+                    high: Math.round(data.daily[2].temp.max)+ "°",
+                    low:  Math.round(data.daily[2].temp.min)+ "°",
                     date: week[(new Date(data.daily[2].dt * 1000)).getDay()],
                     desc: data.daily[2].weather[0].main
 
                 };
                 const day3 = {
-                    high: Math.round(data.daily[3].temp.max),
-                    low:  Math.round(data.daily[3].temp.min),
+                    high: Math.round(data.daily[3].temp.max)+ "°",
+                    low:  Math.round(data.daily[3].temp.min)+ "°",
                     date: week[(new Date(data.daily[3].dt * 1000)).getDay()],
                     desc: data.daily[3].weather[0].main
 
                 };
                 const day4 = {
-                    high: Math.round(data.daily[4].temp.max),
-                    low:  Math.round(data.daily[4].temp.min),
+                    high: Math.round(data.daily[4].temp.max)+ "°",
+                    low:  Math.round(data.daily[4].temp.min)+ "°",
                     date: week[(new Date(data.daily[4].dt * 1000)).getDay()],
                     desc: data.daily[4].weather[0].main
 
                 };
                 const day5 = {
-                    high: Math.round(data.daily[5].temp.max),
-                    low:  Math.round(data.daily[5].temp.min),
+                    high: Math.round(data.daily[5].temp.max)+ "°",
+                    low:  Math.round(data.daily[5].temp.min)+ "°",
                     date: week[(new Date(data.daily[5].dt * 1000)).getDay()],
                     desc: data.daily[5].weather[0].main
 
                 };
                 const day6 = {
-                    high: Math.round(data.daily[6].temp.max),
-                    low:  Math.round(data.daily[6].temp.min),
+                    high: Math.round(data.daily[6].temp.max)+ "°",
+                    low:  Math.round(data.daily[6].temp.min)+ "°",
                     date: week[(new Date(data.daily[6].dt * 1000)).getDay()],
                     desc: data.daily[6].weather[0].main
 
                 };
                 const day7 = {
-                    high: Math.round(data.daily[7].temp.max),
-                    low:  Math.round(data.daily[7].temp.min),
+                    high: Math.round(data.daily[7].temp.max)+ "°",
+                    low:  Math.round(data.daily[7].temp.min)+ "°",
                     date: week[(new Date(data.daily[7].dt * 1000)).getDay()],
                     desc: data.daily[7].weather[0].main
 
