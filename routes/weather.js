@@ -9,10 +9,10 @@ const fetch = require('node-fetch');
 const router = express.Router()
 
 router.get('/current', async (req, res) => {
-    //let latitude = req.query.latitude;
-    //let longitude = req.query.longitude;
-    let latitude = 37.421779;
-    let longitude = -122.084563;
+    let latitude = req.query.latitude;
+    let longitude = req.query.longitude;
+    //let latitude = 37.421779;
+    //let longitude = -122.084563;
     //api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
     //const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&zip=98402,&appid=${API_KEY}`
     const url = `https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
@@ -27,14 +27,14 @@ router.get('/current', async (req, res) => {
                 icon: data.weather[4]
             };
 
-            const tempature = {
+            const temperature = {
                 //current_temp: (Math.round((data.main.temp - 273.15) * (9 / 5) + 32)) + "° F"
                 current_temp: Math.round(data.main.temp) + "° F",
                 high_temp: Math.round(data.main.temp_max) + "°",
                 low_temp:  Math.round(data.main.temp_min) + "°",
             };
             
-            res.send({location, tempature})
+            res.send({location, temperature})
         });
 
     });
